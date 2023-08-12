@@ -2,20 +2,12 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 
 	"github.com/jackc/pgx/v5"
 )
-
-type Video struct {
-	id   int
-	name string
-}
-
-func (v Video) get_link() string {
-	return fmt.Sprintf("https://video.rbdata.ru/video/%v", v.id)
-}
 
 func main() {
 	conn_string := os.Getenv("DB_CONN")
@@ -37,10 +29,19 @@ func main() {
 		fmt.Println("wrong query")
 	}
 
+	var videos []Video
 	for rows.Next() {
 		var video Video
-		rows.Scan(&video.id, &video.name)
-		fmt.Println(video.get_link(), video.name)
+		rows.Scan(&video.Id, &video.Name)
+		//fmt.Println(video.get_link(), video.name)
+		videos = append(videos, video)
 	}
+	r := Response{List: videos}
+	body, err := json.Marshal(&r)
+	if err != nil {
+		println("Error marshalling json")
+		panic(`json error`)
+	}
+	fmt.Println(string(body))
 
 }
