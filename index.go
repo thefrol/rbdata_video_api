@@ -6,12 +6,19 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 )
 
-func Handler(ctx context.Context, request *Request) (*Response, error) {
+func Handler(rw http.ResponseWriter, req *http.Request) {
+	//parsing request
+	name := req.URL.Query().Get("name")
+	fmt.Println("videoName:", name)
+
+	//connecting to db and getting videos
 	conn := Connect()
 	defer conn.Close(context.Background())
-	videos := conn.GetVideos(request.Body.VideoName)
+	videos := conn.GetVideos(name)
 
 	r := ResponseBody{List: videos}
 	body, err := json.Marshal(&r)
@@ -19,8 +26,11 @@ func Handler(ctx context.Context, request *Request) (*Response, error) {
 		println("Error marshalling json")
 		panic(`json error`)
 	}
-	fmt.Println(string(body))
-	resp := Response{StatusCode: 200, Body: string(body)}
 
-	return &resp, nil
+	//writing response
+
+	rw.Header().Set("X-Custom-Header", "Test")
+	rw.WriteHeader(200)
+
+	io.WriteString(rw, string(body))
 }
