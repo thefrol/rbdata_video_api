@@ -12,16 +12,16 @@ type RbData struct {
 	*pgx.Conn
 }
 
-func (rb RbData) GetVideos() []Video {
+func (rb RbData) GetVideos(name string) []Video {
 	rows, err := rb.Query(context.Background(),
 		`SELECT id, "name"
 	FROM public.videos
-	WHERE "name" ILIKE '%ЦСКА%'
+	WHERE "name" ILIKE $1
 	ORDER BY created_at DESC
-	LIMIT 10;`)
+	LIMIT 10;`, "%"+name+"%")
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(`query error:`, err)
 		os.Exit(1)
 	}
 	defer rows.Close()

@@ -8,10 +8,10 @@ import (
 	"fmt"
 )
 
-func Handler(ctx context.Context) (*Response, error) {
+func Handler(ctx context.Context, request *Request) (*Response, error) {
 	conn := Connect()
 	defer conn.Close(context.Background())
-	videos := conn.GetVideos()
+	videos := conn.GetVideos(request.VideoName)
 
 	r := ResponseBody{List: videos}
 	body, err := json.Marshal(&r)

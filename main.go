@@ -7,9 +7,11 @@ import (
 )
 
 func main() {
+	textToSearch := "ЦСКА"
+
 	conn := Connect()
 	defer conn.Close(context.Background())
-	videos := conn.GetVideos()
+	videos := conn.GetVideos(textToSearch)
 
 	r := ResponseBody{List: videos}
 	body, err := json.Marshal(&r)
