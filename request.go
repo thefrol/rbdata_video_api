@@ -1,5 +1,9 @@
 package main
 
-type Request struct {
+type RequestBody struct {
 	VideoName string `json:"videoName"`
+}
+
+type Request struct {
+	Body RequestBody `json:"body"`
 }
