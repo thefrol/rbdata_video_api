@@ -14,7 +14,7 @@ type RbData struct {
 
 func (rb RbData) GetVideos(name string) []Video {
 	rows, err := rb.Query(context.Background(),
-		`SELECT id, "name"
+		`SELECT id, "name",created_at
 	FROM public.videos
 	WHERE "name" ILIKE $1
 	ORDER BY created_at DESC
@@ -29,7 +29,7 @@ func (rb RbData) GetVideos(name string) []Video {
 	videos:=[]Video{}
 	for rows.Next() {
 		var video Video
-		rows.Scan(&video.Id, &video.Name)
+		rows.Scan(&video.Id, &video.Name,&video.CreatedAt)
 		//fmt.Println(video.get_link(), video.name)
 		videos = append(videos, video)
 	}
