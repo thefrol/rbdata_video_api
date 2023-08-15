@@ -1,3 +1,5 @@
 .vscode
 __debug*
 *.zip
+.ycloud_ignore
+.ycloud_conf

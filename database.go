@@ -26,7 +26,7 @@ func (rb RbData) GetVideos(name string) []Video {
 	}
 	defer rows.Close()
 
-	var videos []Video
+	videos:=[]Video{}
 	for rows.Next() {
 		var video Video
 		rows.Scan(&video.Id, &video.Name)
