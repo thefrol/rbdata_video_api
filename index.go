@@ -12,7 +12,7 @@ import (
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
 	//parsing request
-	name := req.URL.Query().Get("name")
+	name := req.URL.Query().Get("videoName")
 	fmt.Println("videoName:", name)
 
 	//connecting to db and getting videos
