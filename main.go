@@ -20,7 +20,4 @@ func main() {
 		panic(`json error`)
 	}
 	fmt.Println(string(body))
-	resp := Response{StatusCode: 200, Body: string(body)}
-
-	fmt.Printf("%v", resp)
 }
