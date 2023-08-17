@@ -3,3 +3,4 @@ __debug*
 *.zip
 .ycloud_ignore
 .ycloud_conf
+*.ps1
