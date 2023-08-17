@@ -11,7 +11,7 @@ func main() {
 
 	conn := Connect()
 	defer conn.Close(context.Background())
-	videos := conn.GetVideos(textToSearch)
+	videos := conn.GetVideos(textToSearch, 10)
 
 	r := ResponseBody{List: videos}
 	body, err := json.Marshal(&r)

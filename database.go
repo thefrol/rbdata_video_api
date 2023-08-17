@@ -12,13 +12,17 @@ type RbData struct {
 	*pgx.Conn
 }
 
-func (rb RbData) GetVideos(name string) []Video {
+func (rb RbData) GetVideos(name string, count int) []Video {
+	if count < 0 {
+		count = 10 // default value
+	}
+
 	rows, err := rb.Query(context.Background(),
 		`SELECT id, "name",created_at
 	FROM public.videos
 	WHERE "name" ILIKE $1
 	ORDER BY created_at DESC
-	LIMIT 10;`, "%"+name+"%")
+	LIMIT $2;`, "%"+name+"%", count)
 
 	if err != nil {
 		fmt.Println(`query error:`, err)
@@ -26,10 +30,10 @@ func (rb RbData) GetVideos(name string) []Video {
 	}
 	defer rows.Close()
 
-	videos:=[]Video{}
+	videos := []Video{}
 	for rows.Next() {
 		var video Video
-		rows.Scan(&video.Id, &video.Name,&video.CreatedAt)
+		rows.Scan(&video.Id, &video.Name, &video.CreatedAt)
 		//fmt.Println(video.get_link(), video.name)
 		videos = append(videos, video)
 	}
