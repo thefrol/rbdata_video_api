@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"cska/db/rbdata"
 	"encoding/json"
 	"fmt"
 )
@@ -9,7 +10,7 @@ import (
 func main() {
 	textToSearch := "ЦСКА"
 
-	conn := Connect()
+	conn := rbdata.Connect()
 	defer conn.Close(context.Background())
 	videos := conn.GetVideos(textToSearch, 10)
 

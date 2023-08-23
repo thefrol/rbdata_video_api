@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"cska/db/rbdata"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -25,7 +26,7 @@ func Handler(rw http.ResponseWriter, req *http.Request) {
 	fmt.Println("videoName:", name)
 
 	//connecting to db and getting videos
-	conn := Connect()
+	conn := rbdata.Connect()
 	defer conn.Close(context.Background())
 	videos := conn.GetVideos(name, count)
 

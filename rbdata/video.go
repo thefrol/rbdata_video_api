@@ -1,4 +1,4 @@
-package main
+package rbdata
 
 import (
 	"fmt"

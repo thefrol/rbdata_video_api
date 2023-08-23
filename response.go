@@ -1,7 +1,9 @@
 package main
 
+import "cska/db/rbdata"
+
 type ResponseBody struct {
-	List []Video `json:"videos"`
+	List []rbdata.Video `json:"videos"`
 }
 
 type Response struct {
