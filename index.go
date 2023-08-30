@@ -5,7 +5,7 @@ package main
 import (
 	"context"
 	"cska/db/rbdata"
-	"cska/db/settings"
+	v1 "cska/db/routes/api/v1"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -24,13 +24,9 @@ func init() {
 	router = gin.Default()
 
 	apiv1 := router.Group("api/v1")
-	apiv1.GET("/", MyHandler)
+	apiv1.GET("/", v1.Home)
 	//router.GET("/", MyHandler)
 	//router.POST("/stuff", PostHandler)
-}
-
-func MyHandler(c *gin.Context) {
-	c.String(http.StatusOK, "Привет, это апи сервер для телеграм бота %v", settings.BotName)
 }
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
