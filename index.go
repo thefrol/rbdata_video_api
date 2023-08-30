@@ -4,6 +4,7 @@ package main
 
 import (
 	v1 "cska/db/routes/api/v1"
+	"cska/db/routes/root"
 	"cska/db/routes/tests"
 	"fmt"
 	"net/http"
@@ -18,6 +19,8 @@ func init() {
 	//to cloud function would use this global value
 	//and wont create router again
 	router = gin.Default()
+
+	router.GET("/", root.Home)
 
 	apiv1 := router.Group("api/v1")
 	apiv1.GET("/", v1.Home)
