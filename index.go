@@ -10,7 +10,27 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
+
+var router *gin.Engine
+
+func init() {
+	//router inits here, so newer call
+	//to cloud function would use this global value
+	//and wont create router again
+	router = gin.Default()
+
+	apiv1 := router.Group("api/v1")
+	apiv1.GET("/", MyHandler)
+	//router.GET("/", MyHandler)
+	//router.POST("/stuff", PostHandler)
+}
+
+func MyHandler(c *gin.Context) {
+	c.String(http.StatusOK, "Привет, это апи сервер для телеграм бота @rbvideobot")
+}
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
 	//parsing request
