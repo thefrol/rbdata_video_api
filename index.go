@@ -3,44 +3,40 @@
 package main
 
 import (
-	"context"
-	"cska/db/rbdata"
-	"encoding/json"
+	v1 "cska/db/routes/api/v1"
+	"cska/db/routes/root"
+	"cska/db/routes/tests"
 	"fmt"
-	"io"
 	"net/http"
-	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
-func Handler(rw http.ResponseWriter, req *http.Request) {
-	//parsing request
-	name := req.URL.Query().Get("videoName")
-	count_string := req.URL.Query().Get("count")
+var router *gin.Engine
 
-	count, err := strconv.Atoi(count_string)
-	if err != nil {
-		fmt.Printf("cant parse query parameter %v %v\n", count_string, err)
-		count = -1
-	}
+func init() {
+	//router inits here, so newer call
+	//to cloud function would use this global value
+	//and wont create router again
+	router = gin.Default()
 
-	fmt.Println("videoName:", name)
+	router.GET("/", root.Home)
 
-	//connecting to db and getting videos
-	conn := rbdata.Connect()
-	defer conn.Close(context.Background())
-	videos := conn.GetVideos(name, count)
+	apiv1 := router.Group("api/v1")
+	apiv1.GET("/", v1.Home)
+	apiv1.POST("videos", v1.Videos)
 
-	r := ResponseBody{List: videos}
-	body, err := json.Marshal(&r)
-	if err != nil {
-		println("Error marshalling json")
-		panic(`json error`)
-	}
+	test := router.Group("test")
+	test.GET("/", tests.Home)
+	test.GET("find", tests.Find)
+	test.GET("database", tests.Database)
 
-	//writing response
+}
 
-	rw.Header().Set("X-Custom-Header", "Test")
-	rw.WriteHeader(200)
+// Handler is a basic handle for Yandex.Cloud.Functions
+// Though we can use "index.router" for this role when configuring our function
+func Handler(w http.ResponseWriter, r *http.Request) {
 
-	io.WriteString(rw, string(body))
+	fmt.Println(*r)
+	router.ServeHTTP(w, r) // ServeHTTP conforms to the http.Handler interface (https://godoc.org/github.com/gin-gonic/gin#Engine.ServeHTTP)
 }
