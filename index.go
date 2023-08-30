@@ -25,6 +25,7 @@ func init() {
 
 	apiv1 := router.Group("api/v1")
 	apiv1.GET("/", v1.Home)
+	apiv1.POST("videos", v1.Videos)
 	//router.GET("/", MyHandler)
 	//router.POST("/stuff", PostHandler)
 }
