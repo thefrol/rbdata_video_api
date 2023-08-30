@@ -4,6 +4,7 @@ package main
 
 import (
 	v1 "cska/db/routes/api/v1"
+	"cska/db/routes/tests"
 	"fmt"
 	"net/http"
 
@@ -21,6 +22,12 @@ func init() {
 	apiv1 := router.Group("api/v1")
 	apiv1.GET("/", v1.Home)
 	apiv1.POST("videos", v1.Videos)
+
+	test := router.Group("test")
+	test.GET("/", tests.Home)
+	test.GET("find", tests.Find)
+	test.GET("database", tests.Database)
+
 }
 
 // Handler is a basic handle for Yandex.Cloud.Functions
