@@ -5,6 +5,7 @@ package main
 import (
 	"context"
 	"cska/db/rbdata"
+	"cska/db/settings"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -29,7 +30,7 @@ func init() {
 }
 
 func MyHandler(c *gin.Context) {
-	c.String(http.StatusOK, "Привет, это апи сервер для телеграм бота @rbvideobot")
+	c.String(http.StatusOK, "Привет, это апи сервер для телеграм бота %v", settings.BotName)
 }
 
 func Handler(rw http.ResponseWriter, req *http.Request) {
