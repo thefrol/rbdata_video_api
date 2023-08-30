@@ -46,7 +46,7 @@ func Connect() *RbData {
 	conn, err := pgx.Connect(context.Background(), conn_string)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
-		os.Exit(1)
+		panic("Cant connect to db") //Это прям очень плохо! #TODO
 	}
 	//defer conn.Close(context.Background())
 	return &RbData{Conn: conn}
